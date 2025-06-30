@@ -3,14 +3,14 @@ const satuanModel = require("../models/satuan.js");
 const getAllSatuan = async (req, res) => {
   try {
     const result = await satuanModel.getAllSatuan();
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       data: {
         satuan: result,
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan semua satuan",
       error: error.message,
@@ -23,17 +23,17 @@ const createSatuan = async (req, res) => {
     const { nama, jumlah_satuan } = req.body;
     const result = await satuanModel.createSatuan(nama, jumlah_satuan);
     if (!result.status) {
-      res.status(400).json({
+      return res.status(400).json({
         status: "error",
         message: result.message,
       });
     }
-    res.status(201).json({
+    return res.status(201).json({
       status: "success",
       message: "Berhasil membuat satuan",
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal membuat satuan",
       error: error.message,
@@ -48,17 +48,17 @@ const updateSatuan = async (req, res) => {
 
     const result = await satuanModel.updateSatuan(id, nama, jumlah_satuan);
     if (!result.status) {
-      res.status(400).json({
+      return res.status(400).json({
         status: "error",
         message: result.message,
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Berhasil memperbarui satuan",
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal memperbarui satuan",
       error: error.message,
@@ -76,12 +76,12 @@ const deleteSatuan = async (req, res) => {
         message: result.message,
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Berhasil menghapus satuan",
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal menghapus satuan",
       error: error.message,

@@ -4,13 +4,13 @@ const bcrypt = require("bcryptjs");
 const getKaryawan = async (req, res) => {
   try {
     const result = await userModel.getKaryawan();
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Data karyawan berhasil diambil",
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mengambil data karyawan",
       error: error.message,
@@ -27,12 +27,12 @@ const createKaryawan = async (req, res) => {
   };
   try {
     const result = await userModel.createKaryawan(kasir);
-    res.status(201).json({
+    return res.status(201).json({
       status: "success",
       message: result.message,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: error.message,
     });
@@ -53,12 +53,12 @@ const updateKaryawan = async (req, res) => {
         message: result.message,
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal memperbarui karyawan",
       error: error.message,
@@ -77,12 +77,12 @@ const ubahPassword = async (req, res) => {
         message: result.message,
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mengubah password",
       error: error.message,
@@ -100,12 +100,12 @@ const deleteKaryawan = async (req, res) => {
         message: result.message,
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal menghapus karyawan",
       error: error.message,

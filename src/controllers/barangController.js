@@ -5,7 +5,7 @@ const path = require("path");
 const getAllBarangKasir = async (req, res) => {
   try {
     const barang = await barangModel.getAllBarangKasir();
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Data barang kasir berhasil diambil",
       data: {
@@ -13,7 +13,7 @@ const getAllBarangKasir = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Terjadi kesalahan pada server",
     });
@@ -23,7 +23,7 @@ const getAllBarangKasir = async (req, res) => {
 const getAllBarangAdmin = async (req, res) => {
   try {
     const barang = await barangModel.getAllBarangAdmin();
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Data barang admin berhasil diambil",
       data: {
@@ -31,7 +31,7 @@ const getAllBarangAdmin = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Terjadi kesalahan pada server",
     });
@@ -42,7 +42,7 @@ const getBarangByKode = async (req, res) => {
   const { kode_barang } = req.params;
   try {
     const barang = await barangModel.getBarangByKode(kode_barang);
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Data barang berhasil diambil",
       data: {
@@ -50,7 +50,7 @@ const getBarangByKode = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: error.message,
     });
@@ -61,7 +61,7 @@ const getBarangByKodePembelian = async (req, res) => {
   const { kode_barang } = req.params;
   try {
     const barang = await barangModel.getBarangByKodePembelian(kode_barang);
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Data barang berhasil diambil",
       data: {
@@ -69,7 +69,7 @@ const getBarangByKodePembelian = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: error.message,
     });
@@ -86,7 +86,7 @@ const getBarangByKodeEksporBarcode = async (req, res) => {
         message: "Barang tidak ditemukan",
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Data barang berhasil diambil",
       data: {
@@ -94,7 +94,7 @@ const getBarangByKodeEksporBarcode = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: error.message,
     });
@@ -125,12 +125,12 @@ const exportExcel = async (req, res) => {
     });
     await workbook.xlsx.writeFile(filePath);
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Berhasil mengekspor data",
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Terjadi kesalahan saat mengekspor data",
       error: error.message,
@@ -141,13 +141,13 @@ const exportExcel = async (req, res) => {
 const getTotalBarang = async (req, res) => {
   try {
     const result = await barangModel.getTotalBarang();
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Total barang berhasil diambil",
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Terjadi kesalahan pada server",
     });
@@ -157,13 +157,13 @@ const getTotalBarang = async (req, res) => {
 const getBarangStokMenipis = async (req, res) => {
   try {
     const barang = await barangModel.getBarangStokMenipis();
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Data barang stok menipis berhasil diambil",
       data: barang,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Terjadi kesalahan pada server",
     });
@@ -174,13 +174,13 @@ const getBarangTerlaris = async (req, res) => {
   const { filter } = req.params;
   try {
     const barang = await barangModel.getBarangTerlaris(filter);
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Data barang terlaris berhasil diambil",
       data: barang,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Terjadi kesalahan pada server",
       error: error.message,

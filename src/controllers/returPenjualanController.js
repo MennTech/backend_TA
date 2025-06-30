@@ -4,7 +4,7 @@ const getReturPenjualanByTahun = async (req, res) => {
   try {
     const { tahun } = req.params;
     const result = await returPenjualanModel.getReturPenjualanByTahun(tahun);
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Berhasil Mendapatkan semua retur penjualan",
       data: {
@@ -12,7 +12,7 @@ const getReturPenjualanByTahun = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan semua retur penjualan",
       error: error.message,
@@ -26,7 +26,7 @@ const getReturPenjualanByNo = async (req, res) => {
     const result = await returPenjualanModel.getReturPenjualanByNo(
       no_retur_penjualan
     );
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Berhasil Mendapatkan semua detail retur penjualan",
       data: {
@@ -34,7 +34,7 @@ const getReturPenjualanByNo = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan semua detail retur penjualan",
       error: error.message,
@@ -45,7 +45,7 @@ const getReturPenjualanByNo = async (req, res) => {
 const getNoReturPenjualan = async (req, res) => {
   try {
     const result = await returPenjualanModel.getNoReturPenjualan();
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Berhasil Mendapatkan semua detail retur penjualan",
       data: {
@@ -53,7 +53,7 @@ const getNoReturPenjualan = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan semua detail retur penjualan",
       error: error.message,
@@ -74,17 +74,17 @@ const createReturPenjualan = async (req, res) => {
       barang
     );
     if (!result.status) {
-      res.status(400).json({
+      return res.status(400).json({
         status: "error",
         message: result.message,
       });
     }
-    res.status(201).json({
+    return res.status(201).json({
       status: "success",
       message: result.message,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan semua detail retur penjualan",
       error: error.message,

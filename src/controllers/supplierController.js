@@ -3,7 +3,7 @@ const supplierModel = require("../models/supplier.js");
 const getAllSupplier = async (req, res) => {
   try {
     const data = await supplierModel.getAllSupplier();
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Berhasil Mendapatkan semua supplier",
       data: {
@@ -11,7 +11,7 @@ const getAllSupplier = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan semua supplier",
       error: error.message,
@@ -34,12 +34,12 @@ const createSupplier = async (req, res) => {
         message: result.message,
       });
     }
-    res.status(201).json({
+    return res.status(201).json({
       status: "success",
       message: result.message,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal membuat supplier",
       error: error.message,
@@ -65,12 +65,12 @@ const updateSupplier = async (req, res) => {
         error: result.message,
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mengupdate supplier",
       error: error.message,
@@ -90,12 +90,12 @@ const deleteSupplier = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal menghapus supplier",
       error: error.message,
@@ -106,13 +106,13 @@ const deleteSupplier = async (req, res) => {
 const getJumlahSupplier = async (req, res) => {
   try {
     const result = await supplierModel.getJumlahSupplier();
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Berhasil mendapatkan jumlah supplier",
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan jumlah supplier",
       error: error.message,
@@ -125,5 +125,5 @@ module.exports = {
   createSupplier,
   updateSupplier,
   deleteSupplier,
-  getJumlahSupplier
+  getJumlahSupplier,
 };

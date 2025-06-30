@@ -18,20 +18,19 @@ const getLaporanPenjualan = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
       data: result.data,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan laporan penjualan",
       error: error.message,
     });
   }
 };
-
 
 const getLaporanBarangLambatTerjual = async (req, res) => {
   try {
@@ -51,13 +50,13 @@ const getLaporanBarangLambatTerjual = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
       data: result.data,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan laporan barang lama terjual",
       error: error.message,
@@ -83,13 +82,13 @@ const getLaporanPembelian = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
       data: result.data,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan laporan pembelian",
       error: error.message,
@@ -108,13 +107,13 @@ const getLaporanUtangPembelianBelumLunas = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
       data: result.data,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan laporan utang pembelian belum lunas",
       error: error.message,
@@ -140,20 +139,19 @@ const getLaporanLabaKotor = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
       data: result.data,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan laporan laba kotor",
       error: error.message,
     });
   }
 };
-
 
 const getLaporanBarangRusak = async (req, res) => {
   const { startDate, endDate, bulan, tahun } = req.query;
@@ -172,13 +170,13 @@ const getLaporanBarangRusak = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
       data: result.data,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan laporan barang rusak",
       error: error.message,
@@ -204,13 +202,13 @@ const getLaporanReturSupplier = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
       data: result.data,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan laporan retur supplier",
       error: error.message,
@@ -236,13 +234,13 @@ const getLaporanReturPenjualan = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
       data: result.data,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan laporan retur penjualan",
       error: error.message,

@@ -3,7 +3,7 @@ const penjualanModel = require("../models/penjualan.js");
 const getNoPenjualan = async (req, res) => {
   try {
     const result = await penjualanModel.getNoPenjualan();
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Berhasil mendapatkan nomor penjualan",
       data: {
@@ -11,7 +11,7 @@ const getNoPenjualan = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan nomor penjualan",
       error: error.message,
@@ -32,7 +32,7 @@ const getPenjualan = async (req, res) => {
         message: result.message,
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
       data: {
@@ -40,7 +40,7 @@ const getPenjualan = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan semua penjualan",
       error: error.message,
@@ -58,7 +58,7 @@ const getPenjualanByNo = async (req, res) => {
         message: result.message,
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
       data: {
@@ -66,7 +66,7 @@ const getPenjualanByNo = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan penjualan",
       error: error.message,
@@ -97,17 +97,17 @@ const createPenjualan = async (req, res) => {
       barang
     );
     if (!result.status) {
-      res.status(400).json({
+      return res.status(400).json({
         status: "error",
         message: result.message,
       });
     }
-    res.status(201).json({
+    return res.status(201).json({
       status: "success",
       message: result.message,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal membuat penjualan",
       error: error.message,
@@ -118,13 +118,13 @@ const createPenjualan = async (req, res) => {
 const getJumlahTransaksiPenjualan = async (req, res) => {
   try {
     const result = await penjualanModel.getJumlahTransaksiPenjualan();
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Berhasil mendapatkan jumlah transaksi penjualan",
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan jumlah transaksi penjualan",
       error: error.message,
@@ -135,13 +135,13 @@ const getJumlahTransaksiPenjualan = async (req, res) => {
 const getPendapatanHarIini = async (req, res) => {
   try {
     const result = await penjualanModel.getPendapatanHariIni();
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Berhasil mendapatkan pendapatan hari ini",
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan pendapatan hari ini",
       error: error.message,
@@ -153,13 +153,13 @@ const getPendapatanByFilter = async (req, res) => {
   try {
     const { filter } = req.params;
     const result = await penjualanModel.getPendapatanByFilter(filter);
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan pendapatan berdasarkan filter",
       error: error.message,

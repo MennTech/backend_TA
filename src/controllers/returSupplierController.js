@@ -1,11 +1,10 @@
 const returSupplierModel = require("../models/returSupplier.js");
-const { message } = require("../validations/supplierValidation.js");
 
 const getReturSupplierByTahun = async (req, res) => {
   const { tahun } = req.params;
   try {
     const result = await returSupplierModel.getReturSupplierByTahun(tahun);
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Berhasil mendapatkan semua data retur supplier",
       data: {
@@ -13,7 +12,7 @@ const getReturSupplierByTahun = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan semua data retur supplier",
       error: error.message,
@@ -24,7 +23,7 @@ const getReturSupplierByTahun = async (req, res) => {
 const getNoReturSupplier = async (req, res) => {
   try {
     const result = await returSupplierModel.getNoReturSupplier();
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Berhasil mendapatkan no retur supplier",
       data: {
@@ -32,7 +31,7 @@ const getNoReturSupplier = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan no retur supplier",
       error: error.message,
@@ -46,7 +45,7 @@ const getDetailReturSupplier = async (req, res) => {
     const result = await returSupplierModel.getDetailReturSupplier(
       no_retur_supplier
     );
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Berhasil mengambil detail retur supplier",
       data: {
@@ -54,7 +53,7 @@ const getDetailReturSupplier = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mengambil detail retur supplier",
       error: error.message,
@@ -68,7 +67,7 @@ const getBarangRusakBySupplier = async (req, res) => {
     const result = await returSupplierModel.getBarangRusakBySupplier(
       id_supplier
     );
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Berhasil mengambil data barang rusak sesuai supplier",
       data: {
@@ -76,7 +75,7 @@ const getBarangRusakBySupplier = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal mendapatkan data barang rusak sesuai supplier",
       error: error.message,
@@ -96,24 +95,23 @@ const createReturSupplier = async (req, res) => {
       barang
     );
     if (!result.status) {
-      res.status(400).json({
+      return res.status(400).json({
         status: "error",
         message: result.message,
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: result.message,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal membuat retur supplier",
       error: error.message,
     });
   }
 };
-
 
 const returSupplierController = {
   getReturSupplierByTahun,

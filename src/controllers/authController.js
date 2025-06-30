@@ -23,13 +23,13 @@ const login = async (req, res) => {
       { expiresIn: process.env.JWT_EXPIRATION }
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Login berhasil",
       data: token,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       message: "Gagal login",
       error: error.message,
@@ -39,7 +39,7 @@ const login = async (req, res) => {
 
 const logout = (req, res) => {
   res.clearCookie("token");
-  res.status(200).json({
+  return res.status(200).json({
     status: "success",
     message: "Logout berhasil",
   });
@@ -67,7 +67,7 @@ const cekToken = async (req, res) => {
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Token valid",
       user: decoded,
