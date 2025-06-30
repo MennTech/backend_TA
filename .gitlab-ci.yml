@@ -1,0 +1,49 @@
+stages:
+  - deploy
+
+deploy_to_server:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh rsync
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - |
+      cat > ~/.ssh/config <<EOF
+      Host ngrok-server
+        HostName $REMOTE_HOST
+        Port $REMOTE_PORT
+        User $SSH_USER
+        IdentityFile ~/.ssh/id_rsa
+        StrictHostKeyChecking no
+      EOF
+    - ssh-keyscan -p "$REMOTE_PORT" "$REMOTE_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+  script:
+    - echo "Starting deployment to production server..."
+    - rsync -avz --exclude=".git" --progress -e "ssh" ./ ngrok-server:/home/noturminesv/projects/gitlab/backend_TA
+
+    # Run remote commands safely
+    - |
+      ssh ngrok-server <<'ENDSSH'
+        set -e  # Fail on critical errors
+        echo "Running remote deployment..."
+
+        cd /home/noturminesv/projects/gitlab/backend_TA
+
+        echo "Installing dependencies..."
+        npm install
+
+        echo "Restarting with PM2..."
+        pm2 stop backend_TA || true
+        pm2 delete backend_TA || true
+        pm2 start app.js --name backend_TA || true
+        pm2 save || true
+        pm2 startup || true
+      ENDSSH
+
+    - echo "Deployment completed successfully."
+
+  only:
+    - production
