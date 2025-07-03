@@ -104,11 +104,6 @@ const getBarangByKodeEksporBarcode = async (req, res) => {
 const exportExcel = async (req, res) => {
   const barang = req.body;
   try {
-    const filePath = path.join(
-      process.env.DOWNLOAD_PATH || path.resolve(__dirname, "../downloads"),
-      "data_barcode.xlsx"
-    );
-
     const workbook = new excelJS.Workbook();
     const worksheet = workbook.addWorksheet("Sheet 1");
 
@@ -120,15 +115,22 @@ const exportExcel = async (req, res) => {
       { header: "jumlah_cetak", key: "jumlah_cetak", width: 20 },
     ];
 
-    barang.forEach((barang) => {
-      worksheet.addRow(barang);
+    barang.forEach((item) => {
+      worksheet.addRow(item);
     });
-    await workbook.xlsx.writeFile(filePath);
 
-    return res.status(200).json({
-      status: "success",
-      message: "Berhasil mengekspor data",
-    });
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" + "data_barcode.xlsx"
+    );
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    return res.status(200).send(buffer);
+
   } catch (error) {
     return res.status(500).json({
       status: "error",
