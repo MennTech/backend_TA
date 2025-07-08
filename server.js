@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const cookierParser = require('cookie-parser');
 const allRoute = require('./src/routes/index.js');
+const cron = require('node-cron');
+const { backupMySQL } = require('./src/backup/backupDB.js');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +20,10 @@ app.use(cookierParser());
 
 app.use('/api/v1/', allRoute);
 
+cron.schedule('0 2 * * 0', () => {
+    console.log('Backup MySQL dijalankan setiap 2 menit');
+    backupMySQL();
+})
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
