@@ -28,9 +28,9 @@ const backupMySQL = () => {
   let command = "";
 
   if (dbPassword) {
-    command = `${mysqldumpPath} -u ${dbUser} -p${dbPassword} ${dbName} > "${backupPath}"`;
+    command = `mysqldump -u ${dbUser} -p${dbPassword} ${dbName} > "${backupPath}"`;
   } else {
-    command = `${mysqldumpPath} -u ${dbUser} ${dbName} > "${backupPath}"`;
+    command = `mysqldump -u ${dbUser} ${dbName} > "${backupPath}"`;
   }
 
   exec(command, (error) => {
