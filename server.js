@@ -20,8 +20,8 @@ app.use(cookierParser());
 
 app.use('/api/v1/', allRoute);
 
-cron.schedule('0 2 * * 0', () => {
-    console.log('Backup MySQL dijalankan setiap 2 menit');
+cron.schedule('0 2 1 * *', () => {
+    console.log('Backup MySQL dijalankan setiap 1 bulan');
     backupMySQL();
 })
 
