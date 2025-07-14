@@ -40,8 +40,7 @@ const getPembelianByTahun = async (tahun) => {
 const getPembelianByNo = async (no_pembelian) => {
   const queryPembelian =
     "SELECT no_pembelian, id_supplier, tanggal, lunas FROM pembelian WHERE no_pembelian = ?";
-  const queryDetailPembelian = 
-  `SELECT 
+  const queryDetailPembelian = `SELECT 
     dp.kode_barang, b.nama, 
     b.id_kategori, dp.id_satuan, 
     dp.jumlah, dp.harga_beli, 
@@ -103,13 +102,28 @@ const createPembelian = async (
           item.harga_grosir,
         ]);
       } else {
-        await conn.query(queryUpdateHarga, [
-          item.pcs_beli,
-          item.harga_jual,
-          item.harga_grosir,
-          item.kode_barang,
-        ]);
+        // Ambil harga beli lama terlebih dahulu
+        const [barangLama] = await conn.query(
+          "SELECT harga_beli FROM barang WHERE kode_barang = ?",
+          [item.kode_barang]
+        );
+        const hargaBeliLama = barangLama[0].harga_beli;
+
+        // Bandingkan harga beli baru dengan harga beli lama
+        if (item.pcs_beli > hargaBeliLama) {
+          // Jika lebih besar, update harga beli
+          await conn.query(
+            "UPDATE barang SET harga_beli = ?, harga_jual = ?, harga_grosir = ? WHERE kode_barang = ?",
+            [
+              item.pcs_beli,
+              item.harga_jual,
+              item.harga_grosir,
+              item.kode_barang,
+            ]
+          );
+        }
       }
+
       // Masukkan detail pembelian
       await conn.query(queryDetailPembelian, [
         no_pembelian,
@@ -196,10 +210,26 @@ const updatePembelian = async (
           ]
         );
       } else {
-        await conn.query(
-          "UPDATE barang SET harga_beli = ?, harga_jual = ?, harga_grosir = ? WHERE kode_barang = ?",
-          [item.pcs_beli, item.harga_jual, item.harga_grosir, item.kode_barang]
+        // Ambil harga beli lama terlebih dahulu
+        const [barangLama] = await conn.query(
+          "SELECT harga_beli FROM barang WHERE kode_barang = ?",
+          [item.kode_barang]
         );
+        const hargaBeliLama = barangLama[0].harga_beli;
+
+        // Bandingkan harga beli baru dengan harga beli lama
+        if (item.pcs_beli > hargaBeliLama) {
+          // Jika lebih besar, update harga beli
+          await conn.query(
+            "UPDATE barang SET harga_beli = ?, harga_jual = ?, harga_grosir = ? WHERE kode_barang = ?",
+            [
+              item.pcs_beli,
+              item.harga_jual,
+              item.harga_grosir,
+              item.kode_barang,
+            ]
+          );
+        }
       }
 
       // Masukkan detail pembelian baru
