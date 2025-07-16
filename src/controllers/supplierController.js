@@ -1,4 +1,5 @@
 const supplierModel = require("../models/supplier.js");
+const { message } = require("../validations/supplierValidation.js");
 
 const getAllSupplier = async (req, res) => {
   try {
@@ -62,7 +63,7 @@ const updateSupplier = async (req, res) => {
     if (!result.status) {
       return res.status(400).json({
         status: "error",
-        error: result.message,
+        message: result.message,
       });
     }
     return res.status(200).json({

@@ -11,9 +11,23 @@ const createSupplier = async (nama, kode_supplier, no_telpon, alamat) => {
   const conn = await dbPool.getConnection();
   try {
     await conn.beginTransaction();
+    const [existing] = await conn.query(
+      "SELECT id FROM supplier WHERE kode_supplier = ?",
+      [kode_supplier]
+    );
+
+    if (existing.length > 0) {
+      await conn.rollback();
+      return {
+        status: false,
+        message: "Kode supplier sudah digunakan",
+      };
+    }
+
     const query =
       "INSERT INTO supplier (nama, kode_supplier, no_telpon, alamat) VALUES (?, ?, ?, ?)";
     await conn.query(query, [nama, kode_supplier, no_telpon, alamat]);
+
     await conn.commit();
     return {
       status: true,
@@ -21,6 +35,13 @@ const createSupplier = async (nama, kode_supplier, no_telpon, alamat) => {
     };
   } catch (error) {
     await conn.rollback();
+    if (error.code === "ER_DUP_ENTRY") {
+      return {
+        status: false,
+        message: "Kode supplier sudah digunakan.",
+      };
+    }
+
     return {
       status: false,
       message: error.message,
@@ -34,9 +55,26 @@ const updateSupplier = async (id, nama, kode_supplier, no_telpon, alamat) => {
   const conn = await dbPool.getConnection();
   try {
     await conn.beginTransaction();
-    const query =
-      "UPDATE supplier SET nama = ?, kode_supplier = ?, no_telpon = ?, alamat = ? WHERE id = ?";
+
+    const [existing] = await conn.query(
+      "SELECT id FROM supplier WHERE kode_supplier = ? AND id != ?",
+      [kode_supplier, id]
+    );
+
+    if (existing.length > 0) {
+      await conn.rollback();
+      return {
+        status: false,
+        message: "Kode supplier sudah digunakan oleh supplier lain.",
+      };
+    }
+    const query = `
+      UPDATE supplier 
+      SET nama = ?, kode_supplier = ?, no_telpon = ?, alamat = ?, updated_at = NOW() 
+      WHERE id = ?
+    `;
     await conn.query(query, [nama, kode_supplier, no_telpon, alamat, id]);
+
     await conn.commit();
     return {
       status: true,
@@ -44,6 +82,13 @@ const updateSupplier = async (id, nama, kode_supplier, no_telpon, alamat) => {
     };
   } catch (error) {
     await conn.rollback();
+    if (error.code === "ER_DUP_ENTRY") {
+      return {
+        status: false,
+        message: "Kode supplier sudah digunakan.",
+      };
+    }
+
     return {
       status: false,
       message: error.message,
