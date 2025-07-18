@@ -67,16 +67,37 @@ const updateKaryawan = async (req, res) => {
 };
 
 const ubahPassword = async (req, res) => {
-  const { newPassword } = req.body;
-  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  const { oldPassword, newPassword } = req.body;
+  const username = req.user.username; 
+
   try {
-    const result = await userModel.ubahPassword(hashedPassword);
+    const user = await userModel.findByUsername(username);
+    if (!user) {
+      return res.status(404).json({
+        status: "error",
+        message: "Pengguna tidak ditemukan.",
+      });
+    }
+
+    const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isPasswordMatch) {
+      return res.status(400).json({
+        status: "error",
+        message: "Password lama salah.",
+      });
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    const result = await userModel.ubahPassword(username, hashedNewPassword);
+
     if (!result.status) {
       return res.status(400).json({
         status: "error",
         message: result.message,
       });
     }
+
     return res.status(200).json({
       status: "success",
       message: result.message,
@@ -84,7 +105,7 @@ const ubahPassword = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       status: "error",
-      message: "Gagal mengubah password",
+      message: "Terjadi kesalahan pada server.",
       error: error.message,
     });
   }

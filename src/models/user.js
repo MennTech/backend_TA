@@ -14,11 +14,12 @@ const findByRole = async (role) => {
   return rows;
 };
 
-const ubahPassword = async (newPassword) => {
+const ubahPassword = async (username, newPassword) => {
   const conn = await dbPool.getConnection();
   try {
-    await conn.query("UPDATE user SET password = ? WHERE username = 'admin'", [
+    await conn.query("UPDATE user SET password = ? WHERE username = ?", [
       newPassword,
+      username,
     ]);
     await conn.commit();
     return {
